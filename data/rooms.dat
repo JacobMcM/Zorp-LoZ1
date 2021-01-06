@@ -1,51 +1,63 @@
-Room Name: level 1 C6
-Room Description:  This is level 1 C6
-Exit Rooms: W-level 1 B6, N-level 1 C5, E-level 1 D6
-Room Name: level 1 B6
-Room Description:  This is level 1 B6
-Exit Rooms: E-level 1 C6
-Room Name: level 1 D6
-Room Description:  This is level 1 D6
-Exit Rooms: W-level 1 C6
-Room Name: level 1 C5
-Room Description:  This is level 1 C5
-Exit Rooms: S-level 1 C6, N-level 1 C4 
-Room Name: level 1 C4 
-Room Description:  This is level 1 C4
-Exit Rooms: N-level 1 C3, E-level 1 D4, S-level 1 C5, W-level 1 B4
-Room Name: level 1 B4 
-Room Description:  This is level 1 B4
-Exit Rooms: N-level 1 B3, E-level 1 C4
-Room Name: level 1 D4
-Room Description:  This is level 1 D4
-Exit Rooms: N-level 1 D3, W-level 1 C4
-Room Name: level 1 C3
-Room Description:  This is level 1 C3
-Exit Rooms: N-level 1 C2, E-level 1 D3, S-level 1 C4, W-level 1 B3
-Room Name: level 1 B3
-Room Description:  This is level 1 B3
-Exit Rooms: E-level 1 C3, S-level 1 B4, W-level 1 A3
-Room Name: level 1 A3
-Room Description:  This is level 1 A3
-Exit Rooms: E-level 1 B3
-Room Name: level 1 C2
-Room Description:  This is level 1 C2
-Exit Rooms: N-level 1 C1, S-level 1 C3
-Room Name: level 1 C1 
-Room Description:  This is level 1 C1
-Exit Rooms: S-level 1 C2, W-level 1 B1
-Room Name: level 1 B1
-Room Description:  This is level 1 B1
-Exit Rooms: E-level 1 C1
-Room Name: level 1 D3
-Room Description:  This is level 1 D3
-Exit Rooms: E-level 1 E3, S-level 1 D4, W-level 1 C3
-Room Name: level 1 E3
-Room Description:  This is level 1 E3
-Exit Rooms: N-level 1 E2, W-level 1 D3
-Room Name: level 1 E2
-Room Description:  This is level 1 E2
-Exit Rooms: E-level 1 F2, S-level 1 E3
-Room Name: level 1 F2
-Room Description:  This is level 1 F2
-Exit Rooms: W-level 1 E2
+Room Name: Forest
+Room Description: this is the Forest
+Exit Rooms: N-level C6, S-Village, D-Cave
+Room Name: Cave
+Room Description: this is Cave
+Exit Rooms: U-Forest
+Room Name: Village
+Room Description: this is the Village
+Exit Rooms: N-Forest
+Room Name: level C6
+Room Description:  This is level C6
+Exit Rooms: W-level B6, N-level C5, E-level D6
+Room Name: level B6
+Room Description:  This is level B6
+Exit Rooms: E-level C6
+Room Name: level D6
+Room Description:  This is level D6
+Exit Rooms: W-level C6
+Room Name: level C5
+Room Description:  This is level C5
+Exit Rooms: S-level C6, N-level C4 
+Room Name: level C4 
+Room Description:  This is level C4
+Exit Rooms: N-level C3, E-level D4, S-level C5, W-level B4
+Room Name: level B4 
+Room Description:  This is level B4
+Exit Rooms: N-level B3, E-level C4
+Room Name: level D4
+Room Description:  This is level D4
+Exit Rooms: N-level D3, W-level C4
+Room Name: level C3
+Room Description:  This is level C3
+Exit Rooms: N-level C2, E-level D3, S-level C4, W-level B3
+Room Name: level B3
+Room Description:  This is level B3
+Exit Rooms: E-level C3, S-level B4, W-level A3
+Room Name: level A3
+Room Description:  This is level A3
+Exit Rooms: E-level B3
+Room Name: level C2
+Room Description:  This is level C2
+Exit Rooms: N-level C1, S-level C3
+Room Name: level C1 
+Room Description:  This is level C1
+Exit Rooms: S-level C2, W-level B1
+Room Name: level B1
+Room Description:  This is level B1
+Exit Rooms: E-level C1, D-Cave 2
+Room Name: Cave 2
+Room Description: This is cave 2
+Exit Rooms: U-level B1
+Room Name: level D3
+Room Description:  This is level D3
+Exit Rooms: E-level E3, S-level D4, W-level C3
+Room Name: level E3
+Room Description:  This is level E3
+Exit Rooms: N-level E2, W-level D3
+Room Name: level E2
+Room Description:  This is level E2
+Exit Rooms: E-level F2, S-level E3
+Room Name: level F2
+Room Description:  This is level F2
+Exit Rooms: W-level E2
