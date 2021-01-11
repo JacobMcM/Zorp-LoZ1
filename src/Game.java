@@ -22,6 +22,7 @@ import java.util.Scanner;
 public class Game {
   private Parser parser;
   private Room currentRoom;
+  private Inventory inventory;
   // This is a MASTER object that contains all of the rooms and is easily
   // accessible.
   // The key will be the name of the room -> no spaces (Use all caps and
@@ -87,7 +88,13 @@ public class Game {
   public Game() {
     try {
       initRooms("data/rooms.dat");
-      currentRoom = masterRoomMap.get("ROOM_1");
+      currentRoom = masterRoomMap.get("FOREST");
+      inventory = new Inventory();
+
+
+
+
+      //currentRoom.getInventory().addItem(new Item("lantern", "sug", 0));//example of how to add items, (itemName, description, weight)
     } catch (Exception e) {
       // TODO Auto-generated catch block
       e.printStackTrace();
@@ -116,8 +123,9 @@ public class Game {
    */
   private void printWelcome() {
     System.out.println();
-    System.out.println("Welcome to Zork!");
-    System.out.println("Zork is a new, incredibly boring adventure game.");
+    System.out.println("Welcome to The Legend Of Zelda-Text adventure Game");
+    System.out.println("This is a shortened Re-creation of the first ever Zelda game in a text adventure medium.");
+    System.out.println("Your quest is to reclaim the magical Triforce, defeat the evil pig-king Ganon and save the princess Zelda. Good Luck");
     System.out.println("Type 'help' if you need help.");
     System.out.println();
     System.out.println(currentRoom.longDescription());
@@ -144,8 +152,24 @@ public class Game {
         return true; // signal that we want to quit
     } else if (commandWord.equals("eat")) {
       System.out.println("Do you really think you should be eating at a time like this?");
+    } else if (commandWord.equals("take")){
+      if (!command.hasSecondWord()){
+        System.out.println("take what? I don't know what you mean... ");
+      }else{
+        takeItem(command.getSecondWord());
+      }
+    } else if (commandWord.equals("drop")){
+      if (!command.hasSecondWord()){
+        System.out.println("drop what? I don't know what you mean... ");
+      }else{
+        dropItem(command.getSecondWord());
+      }
+    }else if (commandWord.equals("inventory")){
+      System.out.println("you are carrying the following: " + inventory);
     }
+  
     return false;
+    
   }
 
   // implementations of user commands:
@@ -154,8 +178,8 @@ public class Game {
    * and a list of the command words.
    */
   private void printHelp() {
-    System.out.println("You are lost. You are alone. You wander");
-    System.out.println("around at Monash Uni, Peninsula Campus.");
+    System.out.println("the world arround is oppresive and confusing,");
+    System.out.println("Your feeble, insignificant, puny mind yells at the face of nowhere for answers.");
     System.out.println();
     System.out.println("Your command words are:");
     parser.showCommands();
@@ -179,6 +203,36 @@ public class Game {
     else {
       currentRoom = nextRoom;
       System.out.println(currentRoom.longDescription());
+    }
+  }
+
+  private void takeItem(String itemName) {
+    Inventory temp = currentRoom.getInventory();
+
+    Item item = temp.removeItem(itemName);
+
+    if (item != null){
+      if (inventory.addItem(item)) {
+        System.out.println("You have taken the" + itemName);
+      }else{
+        System.out.println("you were unable to take the " + itemName);
+      }
+    }else{
+      System.out.println("there is no item called: " + itemName + " in this room");
+    }
+  }
+
+  private void dropItem(String itemName) {
+    Item item = inventory.removeItem(itemName);
+
+    if (item != null){
+      if (currentRoom.getInventory().addItem(item)) {
+        System.out.println("You have dropped the" + itemName);
+      }else{
+        System.out.println("you were unable to drop the " + itemName);
+      }
+    }else{
+      System.out.println("there is no item called: " + itemName + " in your inventory");
     }
   }
 }
