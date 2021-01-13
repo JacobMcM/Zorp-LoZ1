@@ -23,6 +23,7 @@ public class Game {
   private Parser parser;
   private Room currentRoom;
   private Inventory inventory;
+  private int health;
   // This is a MASTER object that contains all of the rooms and is easily
   // accessible.
   // The key will be the name of the room -> no spaces (Use all caps and
@@ -46,6 +47,19 @@ public class Game {
         // Read the Description
         String roomDescription = roomScanner.nextLine();
         room.setDescription(roomDescription.split(":")[1].replaceAll("<br>", "\n").trim());
+
+        //**changes***/ making rooms.dat also store a possible item per room, and a possible entity per room
+
+        //**changes */ must include more detail to roominventory and room entity
+
+        // read item, and generates an int weight from a string, string name and string description from a string array in rooms.dat
+        String roomInventory = roomScanner.nextLine();
+        String[] item = roomInventory.split(":")[1].split("-"); 
+        room.setInventory(Integer.parseInt(item[0]), item[1], item[2].replaceAll("<br>", "\n").trim());
+        // Read the Description
+        String roomEntity = roomScanner.nextLine();
+        String[] entity = roomInventory.split(":")[1].split("-");
+        room.setEntity(entity[1], Integer.parseInt(entity[0]), entity[2].replaceAll("<br>", "\n").trim());
         // Read the Exits
         String roomExits = roomScanner.nextLine();
         // An array of strings in the format E-RoomName
@@ -90,11 +104,8 @@ public class Game {
       initRooms("data/rooms.dat");
       currentRoom = masterRoomMap.get("FOREST");
       inventory = new Inventory();
+      health = 3;
 
-
-
-
-      //currentRoom.getInventory().addItem(new Item("lantern", "sug", 0));//example of how to add items, (itemName, description, weight)
     } catch (Exception e) {
       // TODO Auto-generated catch block
       e.printStackTrace();
@@ -111,9 +122,13 @@ public class Game {
     // execute them until the game is over.
 
     boolean finished = false;
+    health = 3;
     while (!finished) {
       Command command = parser.getCommand();
       finished = processCommand(command);
+      if (health <= 0){
+        finished = false;
+      }
     }
     System.out.println("Thank you for playing.  Good bye.");
   }
@@ -135,7 +150,7 @@ public class Game {
    * Given a command, process (that is: execute) the command. If this command ends
    * the game, true is returned, otherwise false is returned.
    */
-  private boolean processCommand(Command command) {
+  private boolean processCommand(Command command) {// "on"
     if (command.isUnknown()) {
       System.out.println("I don't know what you mean...");
       return false;
@@ -150,15 +165,13 @@ public class Game {
         System.out.println("Quit what?");
       else
         return true; // signal that we want to quit
-    } else if (commandWord.equals("eat")) {
-      System.out.println("Do you really think you should be eating at a time like this?");
-    } else if (commandWord.equals("take")){
+    }else if (commandWord.equals("take")){
       if (!command.hasSecondWord()){
         System.out.println("take what? I don't know what you mean... ");
       }else{
         takeItem(command.getSecondWord());
       }
-    } else if (commandWord.equals("drop")){
+    }else if (commandWord.equals("drop")){
       if (!command.hasSecondWord()){
         System.out.println("drop what? I don't know what you mean... ");
       }else{
@@ -166,7 +179,67 @@ public class Game {
       }
     }else if (commandWord.equals("inventory")){
       System.out.println("you are carrying the following: " + inventory);
+    }else if (commandWord.equals("talk")){
+      talk(command);
+    }else if (commandWord.equals("use")){
+      use(command);
+    }else if (commandWord.equals("push")){
+      if (!command.hasSecondWord()){
+        System.out.println("push what?");
+      }else{
+        push(command);
+      }
+    }else if (commandWord.equals("duck")){
+      if (command.hasSecondWord()){
+        System.out.println("duck huh? *quack quack*");
+      }else{
+        duck();
+      }
+    }else if (commandWord.equals("roll")){
+      if (command.hasSecondWord()){
+        System.out.println("roll huh?");
+      }else{
+        roll();
+      }
+    }else if (commandWord.equals("parry")){
+      if (!command.hasSecondWord()){
+        System.out.println("parry who?");
+      }else{
+        parry(command);
+      }
+    }else if (commandWord.equals("squish")){
+      if (!command.hasSecondWord()){
+        System.out.println("squish who?");
+      }else{
+        squish(command);
+      }
+    }else if (commandWord.equals("block")){
+      if (!command.hasSecondWord()){
+        System.out.println("block who?");
+      }else{
+        block(command);
+      }
+    }else if (commandWord.equals("scream")){
+      if (command.hasSecondWord()){
+        System.out.println("scream huh? are you screaming internally?");
+      }else{
+        scream();
+      }
+    }else if (commandWord.equals("cry")){
+      if (command.hasSecondWord()){
+        System.out.println("cry huh? are you crying internally?");
+      }else{
+        cry();
+      }
+    }else if (commandWord.equals("suicide")){
+      if (command.hasSecondWord()){
+        System.out.println("sui- what?!? what are you taling about?");
+      }else{
+        suicide();
+        return true;
+      }
     }
+  
   
     return false;
     
@@ -234,5 +307,53 @@ public class Game {
     }else{
       System.out.println("there is no item called: " + itemName + " in your inventory");
     }
+  }
+
+  private void talk(Command command){
+
+  }
+
+  private void use(Command command){
+
+  }
+
+  private void push(Command command){
+
+  }
+
+  private void duck(){
+
+  }
+
+  private void roll(){
+
+  }
+
+  private void parry(Command command){
+
+  }
+
+  private void squish(Command command){
+
+  }
+
+  private void block(Command command){
+
+  }
+
+  private void scream(){
+
+  }
+
+  private void cry(){
+
+  }
+
+  private void suicide(){
+    System.out.println("Suicide and depression are serious issues and should be discussed and dealt with the appropriate attention");
+    System.out.println("if you are considering suicide, seek profesional help. you do not have to go through it alone");
+    System.out.println("Suddenly link's friend from the village enters nearby, and talks to link");
+    System.out.println("link returns home and recives the proper medical attention and lives a long happy life. the end.");
+    //game will end after this ^
   }
 }

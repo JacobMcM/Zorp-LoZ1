@@ -1,5 +1,7 @@
 Room Name: Forest
 Room Description: this is the Forest
+Room Inventory: 1-stick-descript
+Room Entitys: 1-bug-it bug
 Exit Rooms: N-level C6, S-Village, D-Cave
 Room Name: Cave
 Room Description: this is Cave
