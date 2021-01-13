@@ -20,6 +20,10 @@ public class Room {
   private String roomName;
   private String description;
   private HashMap<String, Room> exits; // stores exits of this room.
+  private Inventory inventory;
+  private Entity entity;
+  //***change***/ idea event counter and null entitys: if entity is null it means they are dead (or pushed block) or never were in a room in the first place,
+  //event counter will be a counter used to check how many times you have talked to old man, it only dictates they two unique and thrid repeating phrase(s) 
 
   /**
    * Create a room described "description". Initially, it has no exits.
@@ -28,6 +32,9 @@ public class Room {
   public Room(String description) {
     this.description = description;
     exits = new HashMap<String, Room>();
+    inventory = new Inventory();
+    entity = null;
+    //entity = new Entity();//***CHANGE NEEDED*** this creates a defalt old man, but not any enemys, need to vary per room
   }
 
   public Room() {
@@ -35,6 +42,12 @@ public class Room {
     roomName = "DEFAULT ROOM";
     description = "DEFAULT DESCRIPTION";
     exits = new HashMap<String, Room>();
+    inventory = new Inventory();
+    entity = new Entity();//***CHANGE NEEDED*** this creates a defalt old man, but not any enemys, need to vary per room
+  }
+
+  public Inventory getInventory() {
+    return inventory;
   }
 
   public void setExit(char direction, Room r) throws Exception {
@@ -99,7 +112,8 @@ public class Room {
    */
   public String longDescription() {
 
-    return "Room: " + roomName + "\n\n" + description + "\n" + exitString();
+    return "Room: " + roomName + "\n\n" + description + "\n" + exitString() + "\nThe room contains: \n" + inventory;
+
   }
 
   /**
@@ -136,5 +150,17 @@ public class Room {
 
   public void setDescription(String description) {
     this.description = description;
+  }
+
+  public void setInventory(int weight, String name, String discription){
+    if (weight <= 0){
+      inventory = null;
+    }else{
+      inventory.addItem(new Item(name, discription, weight));
+    }
+  }
+
+  public void setEntity(String type, int hp,String discrip){
+    this.entity = new Entity(type, hp, discrip);
   }
 }
