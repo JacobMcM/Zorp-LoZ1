@@ -52,6 +52,7 @@ public class Game {
 
         //**changes */ must include more detail to roominventory and room entity
 
+        /*
         // read item, and generates an int weight from a string, string name and string description from a string array in rooms.dat
         String roomInventory = roomScanner.nextLine();
         String[] item = roomInventory.split(":")[1].split("-"); 
@@ -60,7 +61,9 @@ public class Game {
         String roomEntity = roomScanner.nextLine();
         String[] entity = roomInventory.split(":")[1].split("-");
         room.setEntity(entity[1], Integer.parseInt(entity[0]), entity[2].replaceAll("<br>", "\n").trim());
+        */
         // Read the Exits
+
         String roomExits = roomScanner.nextLine();
         // An array of strings in the format E-RoomName
         String[] rooms = roomExits.split(":")[1].split(",");
