@@ -9,6 +9,7 @@ public class Inventory {
     }
 
     public boolean addItem(Item item){
+        
         return items.add(item);
     }
 
@@ -24,6 +25,16 @@ public class Inventory {
         }
 
         return null;
+    }
+
+    public Boolean isItem(String name){
+        for (int i = 0; i < items.size(); i++){
+            if (name.equals(items.get(i).getName())) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     //iterates through "items" and adds every "Item" name to a string
