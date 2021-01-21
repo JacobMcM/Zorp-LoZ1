@@ -1,63 +1,105 @@
 Room Name: Forest
 Room Description: this is the Forest
+Room Inventory:0-null-null
+Room Entity:0-null-null
 Exit Rooms: N-level C6, S-Village, D-Cave
 Room Name: Cave
 Room Description: this is Cave
+Room Inventory:1-sword-A trusty sword and shield
+Room Entity:1-man-an old man
 Exit Rooms: U-Forest
 Room Name: Village
 Room Description: this is the Village
+Room Inventory:0-null-null
+Room Entity:0-null-null
 Exit Rooms: N-Forest
 Room Name: level C6
 Room Description:  This is level C6
+Room Inventory:0-null-null
+Room Entity:0-null-null
 Exit Rooms: W-level B6, N-level C5, E-level D6
 Room Name: level B6
 Room Description:  This is level B6
+Room Inventory:0-key-a Key that unlocks doors
+Room Entity:1-bats-a bat swarm
 Exit Rooms: E-level C6
 Room Name: level D6
 Room Description:  This is level D6
+Room Inventory:0-null-null
+Room Entity:2-skeleton-a boney swordsman
 Exit Rooms: W-level C6
 Room Name: level C5
 Room Description:  This is level C5
-Exit Rooms: S-level C6, N-level C4 
+Room Inventory:0-null-null
+Room Entity:2-skeleton-a boney swordsman
+Exit Rooms: S-level C6, N-level C4
 Room Name: level C4 
 Room Description:  This is level C4
-Exit Rooms: N-level C3, E-level D4, S-level C5, W-level B4
+Room Inventory:0-key-a Key that unlocks doors
+Room Entity:2-skeleton-a boney swordsman
+Exit Rooms: E-level D4, S-level C5, W-level B4
 Room Name: level B4 
 Room Description:  This is level B4
+Room Inventory:0-null-null
+Room Entity:1-bats-a bat swarm
 Exit Rooms: N-level B3, E-level C4
 Room Name: level D4
 Room Description:  This is level D4
-Exit Rooms: N-level D3, W-level C4
+Room Inventory:2-compass-shows you the way
+Room Entity:1-bats-a bat swarm
+Exit Rooms: W-level C4
 Room Name: level C3
 Room Description:  This is level C3
-Exit Rooms: N-level C2, E-level D3, S-level C4, W-level B3
+Room Inventory:2-heart-gives you 2 additional hearts
+Room Entity:1-slime-a slimey blob creature
+Exit Rooms: N-level C2, E-level D3, W-level B3
 Room Name: level B3
 Room Description:  This is level B3
+Room Inventory:0-null-null
+Room Entity:1-block-a slightly heavy block
 Exit Rooms: E-level C3, S-level B4, W-level A3
 Room Name: level A3
 Room Description:  This is level A3
+Room Inventory:2-bow-a handcarved bow and lether quiver with several arrows
+Room Entity:1-man-an old man
 Exit Rooms: E-level B3
 Room Name: level C2
 Room Description:  This is level C2
+Room Inventory:0-null-null
+Room Entity:2-skeleton-a boney swordsman
 Exit Rooms: N-level C1, S-level C3
 Room Name: level C1 
 Room Description:  This is level C1
+Room Inventory:0-null-null
+Room Entity:2-brute-a large beast with strong spells and stronger fists
 Exit Rooms: S-level C2, W-level B1
 Room Name: level B1
 Room Description:  This is level B1
+Room Inventory:0-null-null
+Room Entity:1-block-a slightly heavy block
 Exit Rooms: E-level C1, D-Cave 2
 Room Name: Cave 2
 Room Description: This is cave 2
+Room Inventory:3-Freeze-a freeze spell that freezes monsters
+Room Entity:1-bats-a bat swarm
 Exit Rooms: U-level B1
 Room Name: level D3
 Room Description:  This is level D3
+Room Inventory:0-null-null
+Room Entity:2-brute-a large beast strong with spells and stronger fists
 Exit Rooms: E-level E3, S-level D4, W-level C3
 Room Name: level E3
 Room Description:  This is level E3
+Room Inventory:0-key-a Key that unlocks doors
+Room Entity:0-null-null
 Exit Rooms: N-level E2, W-level D3
 Room Name: level E2
 Room Description:  This is level E2
+Room Inventory:0-null-null
+Room Entity:3-Dragon-a tall fire breathing dragon
 Exit Rooms: E-level F2, S-level E3
 Room Name: level F2
 Room Description:  This is level F2
+Room Inventory:0-Triforce-the mystical triforce of ledgend
+Room Entity:0-null-null
 Exit Rooms: W-level E2
