@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 public class Entity {
 
     //** CHANGES ***// Entity reqires major reconstruction to be more like inventory ***/
@@ -7,6 +9,7 @@ public class Entity {
     private String type;//type of entity: skeleton, bats, slime, brute, dragon, old man
     private int hp;//remaining health of an enemy
     private String description;
+    private String validEntitys[] = { "null", "man", "bats", "skeleton", "slime", "block", "brute", "Dragon"};
 
     public Entity (){
         type = "Man";
@@ -14,7 +17,11 @@ public class Entity {
     }
 
     public Entity (String type, int hp, String description){
-        this.type = type;
+        if (isEntity(type)){
+            this.type = type;
+        }else{
+            System.out.println("there was a problem as an entity is not valid");///***TESTER */
+        }
         this.hp = hp;
         this.description = description;
         //***CHANGE ***/ would be better if had "setters and getters" like inventory
@@ -28,11 +35,26 @@ public class Entity {
         return this.type;
     }
 
-    public boolean doDamage (int damage){
-        if (this.hp >= damage){
-            this.hp -= damage;
+    public void setType(String type){
+        this.type = type;
+    }
+
+    public boolean doDamage (int damage){        
+        hp -= damage;
+
+        if (hp <= 0){
             return true;
         }
+        return false;
+    }
+
+    public boolean isEntity(String aString) {
+        for (int i = 0; i < validEntitys.length; i++) {
+          if (validEntitys[i].equals(aString)){
+            return true;
+          }
+        }
+        // if we get here, the entity was wrong?
         return false;
     }
     
