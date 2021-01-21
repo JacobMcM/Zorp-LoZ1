@@ -112,7 +112,7 @@ public class Room {
    */
   public String longDescription() {
 
-    return "Room: " + roomName + "\n\n" + description + "\n" + exitString() + "\nThe room contains: \n" + inventory;
+    return "Room: " + roomName + "\n" + description + "\n" + exitString() + "\nThe room contains: \n" + inventory + "(item) \n" + entity.getType() + "(interactable)" ;
 
   }
 
@@ -153,14 +153,21 @@ public class Room {
   }
 
   public void setInventory(int weight, String name, String discription){
-    if (weight <= 0){
+    if (name.equals("null")){
       inventory = null;
     }else{
       inventory.addItem(new Item(name, discription, weight));
     }
   }
 
+  public Entity getEntity() {
+    return entity;
+  }
+
   public void setEntity(String type, int hp,String discrip){
+    /*if (type.equals("null")){
+      this.entity = null;
+    }*///will be needed but will break all commands
     this.entity = new Entity(type, hp, discrip);
   }
 }
