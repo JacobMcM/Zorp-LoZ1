@@ -20,7 +20,7 @@ Room Entity:0-null-null
 Exit Rooms: W-level B6, N-level C5, E-level D6
 Room Name: level B6
 Room Description:  This is level B6
-Room Inventory:0-key-a Key that unlocks doors
+Room Inventory:0-null-null
 Room Entity:1-bats-a bat swarm
 Exit Rooms: E-level C6
 Room Name: level D6
@@ -35,7 +35,7 @@ Room Entity:2-skeleton-a boney swordsman
 Exit Rooms: S-level C6, N-level C4
 Room Name: level C4 
 Room Description:  This is level C4
-Room Inventory:0-key-a Key that unlocks doors
+Room Inventory:0-null-null
 Room Entity:2-skeleton-a boney swordsman
 Exit Rooms: E-level D4, S-level C5, W-level B4
 Room Name: level B4 
@@ -45,7 +45,7 @@ Room Entity:1-bats-a bat swarm
 Exit Rooms: N-level B3, E-level C4
 Room Name: level D4
 Room Description:  This is level D4
-Room Inventory:2-compass-shows you the way
+Room Inventory:2-heart-gives you 2 additional hearts
 Room Entity:1-bats-a bat swarm
 Exit Rooms: W-level C4
 Room Name: level C3
@@ -90,7 +90,7 @@ Room Entity:2-brute-a large beast strong with spells and stronger fists
 Exit Rooms: E-level E3, S-level D4, W-level C3
 Room Name: level E3
 Room Description:  This is level E3
-Room Inventory:0-key-a Key that unlocks doors
+Room Inventory:0-null-null
 Room Entity:0-null-null
 Exit Rooms: N-level E2, W-level D3
 Room Name: level E2
