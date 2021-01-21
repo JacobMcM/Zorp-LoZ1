@@ -22,12 +22,13 @@ import java.util.Scanner;
 public class Game {
   private Parser parser;
   private Room currentRoom;
-  private Inventory inventory;
-  private double health;
-  private int weight;
-  private boolean combat;
-  private int eventCounter1;
-  private int eventCounter2;
+  private Inventory inventory; //is the inventory for the player
+  private double health; //health of the player (out of 3)
+  private int weight; //weight currently being held by the player (out of 4)
+  private boolean combat; // a state entered into where the player cannot move to annother room
+  private int eventCounter1; //counts how many times the player has talked to the old man in "cave"
+  private int eventCounter2; //counts how many times the player has talked to the old man in "level A3"
+
   // This is a MASTER object that contains all of the rooms and is easily
   // accessible.
   // The key will be the name of the room -> no spaces (Use all caps and
@@ -35,6 +36,7 @@ public class Game {
   // In a hashmap keys are case sensitive.
   // masterRoomMap.get("GREAT_ROOM") will return the Room Object that is the Great
   // Room (assuming you have one).
+
   private HashMap<String, Room> masterRoomMap;
 
   private void initRooms(String fileName) throws Exception {
@@ -51,23 +53,18 @@ public class Game {
         // Read the Description
         String roomDescription = roomScanner.nextLine();
         room.setDescription(roomDescription.split(":")[1].replaceAll("<br>", "\n").trim());
-
-        //**changes***/ making rooms.dat also store a possible item per room, and a possible entity per room
-
-        //**changes */ must include more detail to roominventory and room entity
-
         
         // read item, and generates an int weight from a string, string name and string description from a string array in rooms.dat
         String roomInventory = roomScanner.nextLine();
         String[] item = roomInventory.split(":")[1].split("-");
         room.setInventory(Integer.parseInt(item[0]), item[1], item[2].replaceAll("<br>", "\n").trim());
-        // Read the Entity
+
+        // Reads the entity, generates an int hp from a string, string name and string description from a string array in rooms.dat
         String roomEntity = roomScanner.nextLine();
         String[] entity = roomEntity.split(":")[1].split("-");
         room.setEntity(entity[1], Integer.parseInt(entity[0]), entity[2].replaceAll("<br>", "\n").trim());
         
         // Read the Exits
-
         String roomExits = roomScanner.nextLine();
         // An array of strings in the format E-RoomName
         String[] rooms = roomExits.split(":")[1].split(",");
@@ -88,6 +85,7 @@ public class Game {
         Room roomTemp = masterRoomMap.get(key);
         HashMap<String, String> tempExits = exits.get(key);
         for (String s : tempExits.keySet()) {
+
           // s = direction
           // value is the room.
 
@@ -109,7 +107,7 @@ public class Game {
   public Game() {
     try {
       initRooms("data/rooms.dat");
-      currentRoom = masterRoomMap.get("FOREST");
+      currentRoom = masterRoomMap.get("FOREST");//starts the player in the forest
       inventory = new Inventory();
 
     } catch (Exception e) {
@@ -128,25 +126,24 @@ public class Game {
     // execute them until the game is over.
 
     boolean finished = false;
-    combat = false;
     eventCounter1 = 0;//counts how many times you've talked to either old man
     eventCounter2 = 0;//""
-    health = 3.0;
-    combat = false;
-    weight = 0;
+    health = 3.0; //initalize health
+    combat = false;//"" combat as false
+    weight = 0;//"" weight
     
     while (!finished) {
       
       System.out.println("");
       if (currentRoom.getEntity().getType().equals("null") || currentRoom.getEntity().getType().equals("man") || currentRoom.getEntity().getType().equals("block")){
-        combat = false;
+        combat = false; //checks if room has no enemeys, if so make combat false, used as a failsafe
       }
-      if (combat){
+      if (combat){//"UI" elements to keep track of the combat
         System.out.println("you are currently in combat with " + currentRoom.getEntity().getType());
         System.out.println("it has " + currentRoom.getEntity().getHp() + " hearts left" );
       }
-      System.out.println("hearts: " + health);
-      System.out.println("inventory slots: " + weight + "/4 used");
+      System.out.println("hearts: " + health); //UI for health
+      System.out.println("inventory slots: " + weight + "/4 used");//UI for inventory
       System.out.println("");
       Command command = parser.getCommand();
       System.out.println("");
@@ -194,7 +191,7 @@ public class Game {
       }else if(currentRoom.getInventory().isItem(command.getSecondWord())){
         takeItem(command.getSecondWord());
       }else{
-        System.out.println("error found item wrong");///***change***///tester code
+        System.out.println("error found item wrong");//used as a test
       }
     }else if (commandWord.equals("drop")){
       if (!command.hasSecondWord()){
@@ -202,7 +199,7 @@ public class Game {
       }else if(inventory.isItem(command.getSecondWord())){
         dropItem(command.getSecondWord());
       }else{
-        System.out.println("error found item wrong");///***change***///tester code
+        System.out.println("error found item wrong");//used as a test
       }
     }else if (commandWord.equals("inventory")){
       System.out.println("you are carrying the following: " + inventory);
@@ -267,15 +264,15 @@ public class Game {
     
     //win/lose conditions:
 
-    if (currentRoom.getRoomName().equals("Village")){
+    if (currentRoom.getRoomName().equals("Village")){//you return home, the game ends
       System.out.println("deciding that being an adventurer is not for you, you return home");
       System.out.println("you live alone for the rest of your life, with no one recognising the great hero you could have been");
       return true;
-    }else if (health <= 0.0){
+    }else if (health <= 0.0){ //you die, the game ends
       System.out.println("the light fades from your eyes as you leave this world");
       System.out.println("you never reached your goal, and you die with that as your final thought");
       return true;
-    }else if (inventory.isItem("Triforce")){
+    }else if (inventory.isItem("Triforce")){//you gain the triforce, win the game, the game ends
       System.out.println("the mystical triangle glows in front of you");
       System.out.println("you have made it through the perilous quest and have obtained the first peice of the Triforce");
       System.out.println("You have taken your first step to becoming a hero, but the journey will be long and hard");
@@ -301,9 +298,9 @@ public class Game {
     System.out.println();
     System.out.println("Your command words are:");
     parser.showCommands();
-    System.out.println("you're currently in: " + currentRoom.getRoomName());
-    System.out.println("you are currently in combat with a " + currentRoom.getEntity().getType() + " in this room");
-    System.out.println("you can see a " + currentRoom.getInventory() + " in the room");
+    System.out.println("you're currently in: " + currentRoom.getRoomName());//returns name of the room
+    System.out.println("you are currently in combat with a " + currentRoom.getEntity().getType() + " in this room");//prints the entity/enemy in the room
+    System.out.println("you can see a " + currentRoom.getInventory() + " in the room");//prints the room item
   }
 
   /**
@@ -318,7 +315,7 @@ public class Game {
     }
     String direction = command.getSecondWord();
     // Try to leave current room.
-    if (combat){
+    if (combat){//if combat is true (active), you cannot leave a room
       System.out.println("You cannot leave this room, you are currently engauged in combat");
     }else{
       Room nextRoom = currentRoom.nextRoom(direction);
@@ -328,7 +325,7 @@ public class Game {
         currentRoom = nextRoom;
         System.out.println(currentRoom.longDescription());
         if (!currentRoom.getEntity().equals("null") || !currentRoom.getEntity().equals("man") || !currentRoom.getEntity().equals("block")){
-          combat = true;
+          combat = true;//when entering a new room, if the entity is hostile, combat is true
         }
       }
     }
@@ -338,14 +335,14 @@ public class Game {
     Inventory temp = currentRoom.getInventory();
 
     Item item = temp.removeItem(itemName);
-    int itemWeight = item.getWeight();
+    int itemWeight = item.getWeight();//get weight
 
     if (item != null){
-      if (weight + itemWeight < 4){
+      if (weight + itemWeight < 4){//if the item added will make the weight over 4, the item will not be picked up
         if (inventory.addItem(item)) {
           System.out.println("You have taken the " + itemName);
           weight += itemWeight;
-          if (itemName.equals("heart")){
+          if (itemName.equals("heart")){//picking up the heart will grant two temperary hearts that go away if the item is dropped
             System.out.println("it grants you two additonal hearts");
             health += 2.0;
           }
@@ -353,7 +350,7 @@ public class Game {
           System.out.println("you were unable to take the " + itemName);
         }
       }else{
-        System.out.println("the weight of the a " + item.getName() + " is " + itemWeight);
+        System.out.println("the weight of the a " + item.getName() + " is " + itemWeight);//tells the player how much weight a item has that you cannot pick up
         System.out.println("you do not have enough inventory space for a " + item.getName());
       }
     }else{
@@ -369,7 +366,7 @@ public class Game {
       if (currentRoom.getInventory().addItem(item)) {
         System.out.println("You have dropped the " + itemName);
         weight -= itemWeight;
-        if (itemName.equals("heart")){
+        if (itemName.equals("heart")){//removes the hearts ability
           System.out.println("you lose your two additonal hearts");
           health -= 2.0;
         }
@@ -384,7 +381,7 @@ public class Game {
   //***changes needed**/in room I have code written which will acctually make entity = null instead of having its name = "null", this will break...
   //alot of these commands, dont forget
   private void talk(int count1, int count2){//finnished
-    if (currentRoom.getRoomName().equals("Cave")){//***IMPORTANT***//have to change if you are renaming locations
+    if (currentRoom.getRoomName().equals("Cave")){//the text said by the old man changes everytime you ask, up to 4 times
       System.out.println("You speak to the old man in the room:");
       if (count1 == 0){
         System.out.println("\"oh you want me to say the thing? its... um... perilous to go by yourself... uh... Bring this with you...\"");
@@ -398,7 +395,7 @@ public class Game {
       }else{
         System.out.println("It looks as if the old man is ignoring you");
       }
-    }else if (currentRoom.getRoomName().equals(" level A3")){//***IMPORTANT***//have to change if you are renaming locations
+    }else if (currentRoom.getRoomName().equals("level A3")){//the text said by the old man changes everytime you ask, up to 4 times
       System.out.println("You speak to the old man in the room:");
       if (count2 == 0){
         System.out.println("\"EASTMOST PENNINSULA IS THE SECRET!\"");
@@ -412,26 +409,24 @@ public class Game {
       }else{
         System.out.println("It looks as if the old man is ignoring you");
       }
-    }else if(currentRoom.getEntity().getType().equals("null") || currentRoom.getEntity().getType().equals("block")){
+    }else if(currentRoom.getEntity().getType().equals("null") || currentRoom.getEntity().getType().equals("block")){//comedy for talking to nothing
       System.out.println("there is nothing arround to talk to...");
       System.out.println("you talk to youself, such as a crazed lunatic would, then return back to your quest");
-    }else{
+    }else{//you will get attacked for talking to enemys
       System.out.println("you attempt to comunicate with the monster but it doesnt seem to understand...");
       System.out.println("you are now vulnerable to an attack");
-      takeDamage(1);//***change later */
+      takeDamage(1);
     }
   }
 
-  private void use(Command command){//95% done need unlock (may remove)
-    if (inventory.isItem(command.getSecondWord())){//if somthing breaks, check how inventory is stored/created
-      if (command.getSecondWord().equals("sword") || command.getSecondWord().equals("bow") || command.getSecondWord().equals("Freeze")){
+  private void use(Command command){//use items, used for attacking
+    if (inventory.isItem(command.getSecondWord())){
+      if (command.getSecondWord().equals("sword") || command.getSecondWord().equals("bow") || command.getSecondWord().equals("Freeze")){//calls attack if "use"-ing a weapon
         attack(command.getSecondWord());
-      }else if (command.getSecondWord().equals("heart")){
+      }else if (command.getSecondWord().equals("heart")){//lectures you on how heart works
         System.out.println("heart is an active item, and therefore cannot be \"used\"");
         System.out.println("drop it to remove its effects");
-      }else if (command.getSecondWord().equals("key")){
-        //when doors are unlockable implemt a function here---
-      }else{///***change *///it wont work after changing null-named into just null
+      }else{//used as a tester
         System.out.println("you cant \"use\" nothing");
       }
     }else{
@@ -439,11 +434,13 @@ public class Game {
     }
   }
 
-  private void attack(String attackItem){//finnished but might be 80% cus of glitchs/exploits
+  private void attack(String attackItem){//used for attacking enemys
+    //if the entity in the room is hostile:
     if (!currentRoom.getEntity().getType().equals("null") && !currentRoom.getEntity().getType().equals("block") && !currentRoom.getEntity().getType().equals("man")){
+      //print what item you are using to attack what enetity
       System.out.println("You are using a " + attackItem + " to fight the " + currentRoom.getEntity().getType());
 
-      int damage = 0;
+      int damage = 0;//calculates damage based on item used
       if (attackItem.equals("sword")){
         damage = 1;
         System.out.println("the mighty steel of your blade cuts into the " + currentRoom.getEntity().getType());
@@ -455,23 +452,30 @@ public class Game {
         damage = 3;
         System.out.println("a touch of cold flows through your hands as you unleash a tiny blizzard of magic onto the " + currentRoom.getEntity().getType());
       }
+
+      //prints how much damage is done ti the entity in the room
       System.out.println("you do " + damage + " heart(s) of damage to the " + currentRoom.getEntity().getType());
       
+      //determines if the entity is dead after the previous attack
       boolean isDead = currentRoom.getEntity().doDamage(damage);
       if(isDead){
+        //if entity is dead, print this information
         System.out.println("you have vanquished the " + currentRoom.getEntity().getType());
         currentRoom.getEntity().setType("null");
         combat = false;
-      }else{      
+      }else{    
+        //if not describe what happens afterword  
         if (attackItem.equals("Freeze")){
-          System.out.println("the enemy seems unable to move from that ice spell");
+          System.out.println("the enemy seems unable to move from that ice spell");//wont attack
         }else{
           System.out.println("you attack the " + currentRoom.getEntity().getType() + " but it doesn't go down easy");
           System.out.println("you are now vulnerable to an attack");
-          takeDamage(1);
+          takeDamage(1);//100% chance of being hit by incoming attacked
         }
       }      
     }else if (currentRoom.getEntity().getType().equals("man")){
+      //if you attack the old man he reaveals how powerful he is and kills you
+      //aka comedy
       if (attackItem.equals("sword")){
         System.out.println("the mighty steel of your blade cuts into the " + currentRoom.getEntity().getType());
       }else if(attackItem.equals("bow")){
@@ -492,18 +496,19 @@ public class Game {
     }
   }
 
-  private void push(){//95% finnished, reqires locks code    
+  private void push(){//you can push arround blocks
     if (currentRoom.getEntity().getType().equals("block")){
       System.out.println("you push the crumbling block out of the way");
       System.out.println("as you do the block slots into a hile in the ground and becomes part of the floor");
-      //***needs adding****// this actions would open certian "blocked" doors
       currentRoom.getEntity().setType("null");
     }else if(currentRoom.getEntity().getType().equals("man")){
+      //response for pushing in a room with "man"
       System.out.println("you force your body weight onto the old man");
       System.out.println("but surprisingly he doesnt budge at all, like if he was made of stone");
       System.out.println("he looks down at your attempt, not with anger but with mild bemusement, saying nothing");
       System.out.println("after several unsuccessful soves, you return to your quest");
     }else if(currentRoom.getEntity().getType().equals("null")){
+      //response for pushing in a room with nothing
       System.out.println("you force a strong push towards one of the walls of the small room");
       System.out.println("wait... was the room always this small?");
       System.out.println("is...is it just me or... is this room getting smaller");
@@ -513,6 +518,7 @@ public class Game {
       System.out.println("suddenly you realize that, no, the walls are not closing in, you're just starved for attention.");
       System.out.println("you return to your quest");
     }else{
+      //if you try to "push" a enemy it will attack
       System.out.println("You press your weight against the " + currentRoom.getEntity().getType());
       System.out.println("you realize that all you've done is made it angry");
       System.out.println("you are now vulnerable to an attack");
@@ -520,20 +526,24 @@ public class Game {
     }    
   }
 
-  private void duck(){//finished
+  private void duck(){//used to duck
     if (currentRoom.getEntity().getType().equals("bats")){
+      //ducking in a room with bats will "kill" them
       System.out.println("you drop to the floor quickly as the bat swarm flys overhead exiting the temple");
       System.out.println("there are no more bats in this room");
       currentRoom.getEntity().setType("null");
-      combat = false;
+      combat = false;//makes combat false becuase the current entity (bats) are "dead/gone"
     }else if (currentRoom.getEntity().getType().equals("null") || currentRoom.getEntity().getType().equals("block")){
+      //reasponse to ducking in a room with nothing
       System.out.println("like a coward you drop to your knees at the first face of challenge");
       System.out.println("after roleplaying a true yellow-belly for a minute or two, you return to your quest");
     }else if (currentRoom.getEntity().getType().equals("man")){
+      //reasponse to ducking in a room with "man"
       System.out.println("you drop to your knees right in front of the old man");
       System.out.println("\"you all right lad? did something scare you, hmm?\" the old man laughs to himself");
       System.out.println("after suffering through his humiliation, you return to your quest");
     }else{
+      //you will get attacked if you duck in front of an enemy
       System.out.println("You quickly drop at the sight of the monster");
       System.out.println("despite this, the monster can still see you, and still wants to hurt you");
       System.out.println("you are now vulnerable to an attack");     
@@ -541,27 +551,33 @@ public class Game {
     }
   }
 
-  private void roll(){//finnished
+  private void roll(){//use to roll
     if (currentRoom.getEntity().getType().equals("man")){
+      //reasponse to rolling in a room with "man"
       System.out.println("you preform a tactical roll in front of the old man");
       System.out.println("hes not impressed");
       System.out.println("with that disapointing let-down, you return to your quest");
     }else if (currentRoom.getEntity().getType().equals("null") || currentRoom.getEntity().getType().equals("block")){
+      //reasponse to rolling in a room with nothing
       System.out.println("you starting rolling arround the room, picking up speed");
       System.out.println("once, twice, three-times, your picking up speed while rolling in a circle in the room");
       System.out.println("as you get faster the spinning image of the room becomes blured and you start seeing fantastical images with strange propertys");
       System.out.println("suddely you hit a wall, and after having a visons beyond this mortal plane, you throw up from the dizziness");
       System.out.println("despite having a supernatural life-changing vision, you return to your quest");
     }else if (currentRoom.getEntity().getType().equals("dragon")){
+      //will reduce the chance of the dragon hitting you to a 1/4 chance
       System.out.println("you roll quickly to atempt to avoid a vicious stream of fire");
-      takeDamage(4);
+      takeDamage(4);//the int in takeDamage will become denominator in chance
     }else if (currentRoom.getEntity().getType().equals("brute")){
+      //will avoid damage from a "brute"
       System.out.println("you roll quickly to atempt to avoid a bitter cold freeze spell");
       System.out.println("the brute is so surprized you avoided his freeze spell that he isn't atempting a counter attack");
     }else if (currentRoom.getEntity().getType().equals("skeleton")){
+      //will half the damage from a skeleton
       System.out.println("you roll quickly to atempt to avoid the sharp end of the skeleton's blade");
       takeDamage(2);
     }else{
+      //will take full damage from any other enemy
       System.out.println("you roll arround the room to avoid an attack");
       System.out.println("but despite this, the " + currentRoom.getEntity().getType() + " follows you with their eyes");
       System.out.println("you are now vulnerable to an attack");
@@ -571,25 +587,28 @@ public class Game {
     }
   }
 
-  private void squish(Command command){//finnished
-    if (currentRoom.getEntity().isEntity(command.getSecondWord())){
-      if (currentRoom.getEntity().getType().equals(command.getSecondWord())){
-        if (command.getSecondWord().equals("slime")){
+  private void squish(Command command){//used to squish
+    if (currentRoom.getEntity().isEntity(command.getSecondWord())){//checks if the entity you are trying to squish is a real entity
+      if (currentRoom.getEntity().getType().equals(command.getSecondWord())){//checks if the current entity in the room is the entity you're trying to attack
+        if (command.getSecondWord().equals("slime")){//instantly kills the slime entity
           System.out.println("you bring the weight of your foot upon the gooey monster");
           System.out.println("the living slime is swiftly defeated under the mighty heel of your boot");
           System.out.println("that boot will need a good clean though, eugh!");
           currentRoom.getEntity().setType("null");
-          combat = false;
+          combat = false;//failsafe to turn combat off becuase it is confirmed that the slime is dead
         }else if(command.getSecondWord().equals("man")){
+          //reasponse to squishing in a room with "man"
           System.out.println("you step on the foot of the older gentlemen");
           System.out.println("he winces at the action and stares at you with annoyance");
           System.out.println("\"REMOVE. YOUR. FOOT. FROM. MINE.");
           System.out.println("In shear fear of retaliation, you QUICKLY return to your quest");
         }else if(command.getSecondWord().equals("null") || command.getSecondWord().equals("block")){
+          //reasponse to squishing in a room with nothing
           System.out.println("you step on nothing, imagining standing overtop a grand victory");
           System.out.println("so get on with it loser, stop imagining");
           System.out.println("you return to your qeust");
         }else{
+          //you will get attacked if you try squishing an enemy
           System.out.println("you attempt to step on the " + command.getSecondWord());
           System.out.println("you realize that all you've done is made it angry");
           System.out.println("you are now vulnerable to an attack");
@@ -603,29 +622,34 @@ public class Game {
     }
   }
 
-  private void block(Command command){//finnished
-    if (currentRoom.getEntity().isEntity(command.getSecondWord())){
-      if (currentRoom.getEntity().getType().equals(command.getSecondWord())){
-        if (this.inventory.isItem("sword")){
+  private void block(Command command){//attempts to block against future attacks
+    if (currentRoom.getEntity().isEntity(command.getSecondWord())){//checks if the entity you are block against is a real entity
+      if (currentRoom.getEntity().getType().equals(command.getSecondWord())){//checks if the current entity in the room is the entity you're trying to attack
+        if (this.inventory.isItem("sword")){//you must have a sword in order to block
           if (command.getSecondWord().equals("skeleton")){
+            //will half the damage from a skeleton
             System.out.println("you pull up your sword in a blocking stance against the undead blade-user");
             System.out.println("the skeleton swings, and (to break the 4rth wall a bit) there's a 50% chance he'll hit!");
             takeDamage(2);
           }else if(command.getSecondWord().equals("man")){
+            //reasponse to blocking in a room with "man"
             System.out.println("you pull out your sword and enter a defence stance against the old man");
             System.out.println("he chuckles: \"if I wanted to attack you, that puny stance wouldn't stop me\"");
             System.out.println("while considering what he truely means, you return to your quest");
           }else if(command.getSecondWord().equals("null") || command.getSecondWord().equals("block")){
+            //reasponse to blocking in a room with nothing
             System.out.println("you pull out your sword to defend against... nothing");
             System.out.println("do you have a reason? who KNOWS! WHO CARES!!!");
             System.out.println("I'm only curious becuase I have no idea what in the word your doing");
             System.out.println("put that stupid thing away so you can return to your qeust");
           }else if(command.getSecondWord().equals("dragon") || command.getSecondWord().equals("brute")){
+            //reasponse to blocking in a room with dragon or brute, both being magic users
             System.out.println("you pull out you sword to defend against a flow of magic");
             System.out.println("the sword cuts through the magic but its still heading towards you");
             System.out.println("the magic is deflected stright into your arms and legs, this isn't an anime");
-            takeDamage(1);            
+            takeDamage(1); // differnet discription, same damage     
           }else{
+            //you will get attacked if you try blocking any other enemy
             System.out.println("you attempt to block against the " + command.getSecondWord());
             System.out.println("but the " + command.getSecondWord() + " can get around your weak attempt");
             System.out.println("you are now vulnerable to an attack");            
@@ -643,16 +667,18 @@ public class Game {
   }
 
   private void scream(){
-    if (currentRoom.getEntity().getType().equals("man")){
+    if (currentRoom.getEntity().getType().equals("man")){//reasponse to screaming in a room with "man"
       System.out.println("you realease an unholy sound in front of the old man");
       System.out.println("he covers his ears in pain \"what are you DOING!\"");
       System.out.println("realizing you've upset him, you return to your quest");
     }else if (currentRoom.getEntity().getType().equals("null") || currentRoom.getEntity().getType().equals("block")){
+      //reasponse to screaming in a room with nothing
       System.out.println("you scream into room");
       System.out.println("the yell echos throughout the temple");
       System.out.println("as alone as you feel, you suddely feel less as multiple versions of your own voice are nearby you");
       System.out.println("having made this weird relization, you return to your quest");
     }else{
+      //will half the damage from any entitys
       System.out.println("you scream into the face of the " + currentRoom.getEntity().getType());
       System.out.println("it seems you have affected the " + currentRoom.getEntity().getType() +" and will have a 50/50 chance of hitting you after");
       System.out.println("you are now vulnerable to an attack");
@@ -662,17 +688,20 @@ public class Game {
 
   private void cry(){
     if (currentRoom.getEntity().getType().equals("man")){
+      //reasponse to crying in a room with "man"
       System.out.println("you curl up into a ball in front of the old man");
       System.out.println("\"stop acting like a baby and get back to your mission\"");
       System.out.println("\"...\"");
       System.out.println("\"listen kid, if you need someone to talk to, you can open up to me\"");
       System.out.println("after opening up to the old man about your insecurities, you return to your quest");
     }else if (currentRoom.getEntity().getType().equals("null") || currentRoom.getEntity().getType().equals("block")){
+      //reasponse to crying in a room with nothing
       System.out.println("you start bawling on the floor of the temple");
       System.out.println("you miss your village, your friends, your home.. your mom");
       System.out.println("after you pull yourself together becuase of the importance of the mission...");
       System.out.println("you return to your quest");
     }else{
+      //you will get attacked if you try crying in front of an enemy
       System.out.println("you start crying in front the " + currentRoom.getEntity().getType());
       System.out.println("for a split second it second it seems like the " + currentRoom.getEntity().getType() + " has empathy for you");
       System.out.println("but then it returns to attacking you");
@@ -681,7 +710,8 @@ public class Game {
     }
   }
 
-  private void suicide(){//finnished
+  private void suicide(){
+    //strangly serious response to suicide
     System.out.println("Suicide and depression are serious issues and should be discussed and dealt with the appropriate attention");
     System.out.println("if you are considering suicide, seek profesional help. you do not have to go through it alone");
     System.out.println("Suddenly link's friend from the village enters nearby, and talks to link");
@@ -689,10 +719,12 @@ public class Game {
     //game will end after this ^
   }
 
-  private void takeDamage(int percent){//requires tweeking
-    int rand = (int)(Math.random()* percent) + 1;
+  private void takeDamage(int percent){
+    int rand = (int)(Math.random()* percent) + 1;//takes int "percent" and generates the random number between 1 and "percent"
+    //if this random number is one (25% if percent = 4, 50% if percent = 2, 100% if percent = 1)
 
-    if(rand == 1){
+
+    if(rand == 1){//unique discription for each enemy attacking you
       if (currentRoom.getEntity().getType().equals("skeleton")){
         System.out.println("the boney menace strikes you with his sword for a full heart of damage");
         health -= 1.0;
@@ -709,7 +741,7 @@ public class Game {
         System.out.println("the towering lizard spits out a ball of fire which stikes you for a heart and a half of damage");
         health -= 1.5;
       }
-    }else{
+    }else{//prints discription of a attack by an enemy missing, and not taking damage
       System.out.println("luck is on your side as the " + currentRoom.getEntity().getType() + " misses its attack");
     }
   }

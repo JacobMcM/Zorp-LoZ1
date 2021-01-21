@@ -1,8 +1,6 @@
-public class Zork {//no changes neccisarry
+public class Zork {//this code remains unchanged
   public static void main(String[] args) {
     Game game = new Game();
     game.play();
   }
 }
-
-//reminder to push*** do it

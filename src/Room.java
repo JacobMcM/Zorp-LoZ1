@@ -29,28 +29,27 @@ public class Room {
    * Create a room described "description". Initially, it has no exits.
    * "description" is something like "a kitchen" or "an open court yard".
    */
-  public Room(String description) {
+  public Room(String description) {//room included with a "discription", includes both inventory and entity
     this.description = description;
     exits = new HashMap<String, Room>();
     inventory = new Inventory();
     entity = null;
-    //entity = new Entity();//***CHANGE NEEDED*** this creates a defalt old man, but not any enemys, need to vary per room
   }
 
-  public Room() {
+  public Room() {//defult "room", includes both inventory and entity
     // default constructor.
     roomName = "DEFAULT ROOM";
     description = "DEFAULT DESCRIPTION";
     exits = new HashMap<String, Room>();
     inventory = new Inventory();
-    entity = new Entity();//***CHANGE NEEDED*** this creates a defalt old man, but not any enemys, need to vary per room
+    entity = new Entity();
   }
 
-  public Inventory getInventory() {
+  public Inventory getInventory() {//return inventory
     return inventory;
   }
 
-  public void setExit(char direction, Room r) throws Exception {
+  public void setExit(char direction, Room r) throws Exception {//unchanged
     String dir = "";
     
     switch (direction) {
@@ -83,7 +82,7 @@ public class Room {
    * Define the exits of this room. Every direction either leads to another room
    * or is null (no exit there).
    */
-  public void setExits(Room north, Room east, Room south, Room west, Room up, Room down) {
+  public void setExits(Room north, Room east, Room south, Room west, Room up, Room down) {//unchanged
     if (north != null)
       exits.put("north", north);
     if (east != null)
@@ -102,7 +101,7 @@ public class Room {
    * Return the description of the room (the one that was defined in the
    * constructor).
    */
-  public String shortDescription() {
+  public String shortDescription() {//unchanged
     return "Room: " + roomName + "\n\n" + description;
   }
 
@@ -110,17 +109,15 @@ public class Room {
    * Return a long description of this room, on the form: You are in the kitchen.
    * Exits: north west
    */
-  public String longDescription() {
-
+  public String longDescription() {//unchanged
     return "Room: " + roomName + "\n" + description + "\n" + exitString() + "\nThe room contains: \n" + inventory + "(item) \n" + entity.getType() + "(interactable)" ;
-
   }
 
   /**
    * Return a string describing the room's exits, for example "Exits: north west
    * ".
    */
-  private String exitString() {
+  private String exitString() {//unchanged
     String returnString = "Exits:";
     Set keys = exits.keySet();
     for (Iterator iter = keys.iterator(); iter.hasNext();)
@@ -152,7 +149,7 @@ public class Room {
     this.description = description;
   }
 
-  public void setInventory(int weight, String name, String discription){
+  public void setInventory(int weight, String name, String discription){ //sets the inventory
     if (name.equals("null")){
       inventory = null;
     }else{
@@ -163,6 +160,8 @@ public class Room {
   public Entity getEntity() {
     return entity;
   }
+
+  // ^ v get and set the entity inside of "room"
 
   public void setEntity(String type, int hp,String discrip){
     /*if (type.equals("null")){
